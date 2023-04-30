@@ -20,7 +20,7 @@ npm install node-red-contrib-iiot-rpi-ds18b20
 - To prevents locks only one node is allowed.
 - The output values are °C or °F and send as number array.
 - This node works on Raspberry Pi with 32bit or 64bit OS.
-- Enable one wire with raspi-config.
+- Enable 1-Wire with raspi-config.
 
 [CHANGELOG](CHANGELOG.md)
 

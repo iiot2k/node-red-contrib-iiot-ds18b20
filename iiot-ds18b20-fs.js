@@ -33,7 +33,6 @@ module.exports = function(RED) {
 		node.iserror = false;
 		node.ndevice = 0;
 		node.ch_cnt = 0;
-		node.id_update = [];
 		node.status_txt = "↻ " + node.tupdate + "s ";
 
 		if (sysmodule === undefined)
@@ -93,11 +92,15 @@ module.exports = function(RED) {
 
 				for ( var index = 0; index < node.ndevice; index++)
 					update(index);
-			}, node.tupdate);
+			}, node.tupdate * 1000);
 
 		node.on('close', function () {
 			clearInterval(node.id_interval);
 			sysmodule.deinit();
 		});
 	});
+
+	RED.httpAdmin.get('/sensorlist', function(req, res) {
+		res.send(sysmodule.get_list_fs());
+    });
 }
