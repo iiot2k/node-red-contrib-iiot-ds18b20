@@ -1,0 +1,258 @@
+[
+    {
+        "id": "9e32fd508eb5ed46",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "dfefa9bf409ccbdc",
+        "type": "iiot-ds18b20-fs",
+        "z": "9e32fd508eb5ed46",
+        "tupdate": 1,
+        "fahrenheit": false,
+        "tofix": "1",
+        "x": 320,
+        "y": 240,
+        "wires": [
+            [
+                "901940596fd0af93"
+            ]
+        ]
+    },
+    {
+        "id": "901940596fd0af93",
+        "type": "function",
+        "z": "9e32fd508eb5ed46",
+        "name": "split",
+        "func": "return [\n    { payload: msg.payload[0] }, // output 1\n    { payload: msg.payload[1] }, // output 2\n    { payload: msg.payload[2] }, // output 3  \n    { payload: msg.payload[0] >= 30.5 }, // output 4\n    { payload: msg.payload[1] >= 20.5 }, // output 5\n    { payload: msg.payload[2] >= 19.3 } // output 6  \n];\n",
+        "outputs": 6,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 240,
+        "wires": [
+            [
+                "6e4388ca4360d49a"
+            ],
+            [
+                "f01d6fd3ca410a20"
+            ],
+            [
+                "2659e451eff874d2"
+            ],
+            [
+                "ae7bf180bf0e932e"
+            ],
+            [
+                "a6b58e4296063dda"
+            ],
+            [
+                "86c22749f967588d"
+            ]
+        ]
+    },
+    {
+        "id": "6e4388ca4360d49a",
+        "type": "ui_gauge",
+        "z": "9e32fd508eb5ed46",
+        "name": "",
+        "group": "5285af9a244b9da0",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "temp 1",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-50",
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 650,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "f01d6fd3ca410a20",
+        "type": "ui_gauge",
+        "z": "9e32fd508eb5ed46",
+        "name": "",
+        "group": "5285af9a244b9da0",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "temp 2",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-50",
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 650,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2659e451eff874d2",
+        "type": "ui_gauge",
+        "z": "9e32fd508eb5ed46",
+        "name": "",
+        "group": "5285af9a244b9da0",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "temp 2",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-50",
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 650,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ae7bf180bf0e932e",
+        "type": "ui_switch",
+        "z": "9e32fd508eb5ed46",
+        "name": "",
+        "label": "temp 1 alarm",
+        "tooltip": "",
+        "group": "5285af9a244b9da0",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "notifications",
+        "oncolor": "red",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "notifications_none",
+        "offcolor": "green",
+        "animate": false,
+        "className": "",
+        "x": 670,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a6b58e4296063dda",
+        "type": "ui_switch",
+        "z": "9e32fd508eb5ed46",
+        "name": "",
+        "label": "temp 2 alarm",
+        "tooltip": "",
+        "group": "5285af9a244b9da0",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "notifications",
+        "oncolor": "red",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "notifications_none",
+        "offcolor": "green",
+        "animate": false,
+        "className": "",
+        "x": 670,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "86c22749f967588d",
+        "type": "ui_switch",
+        "z": "9e32fd508eb5ed46",
+        "name": "",
+        "label": "temp 3 alarm",
+        "tooltip": "",
+        "group": "5285af9a244b9da0",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "notifications",
+        "oncolor": "red",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "notifications_none",
+        "offcolor": "green",
+        "animate": false,
+        "className": "",
+        "x": 670,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5285af9a244b9da0",
+        "type": "ui_group",
+        "name": "Daily Switch",
+        "tab": "eb28d2c501257130",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "eb28d2c501257130",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
