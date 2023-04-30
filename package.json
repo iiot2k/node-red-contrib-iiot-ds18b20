@@ -8,7 +8,7 @@
 
   "repository": {
     "type": "git",
-    "url": "https://github.com/redplc/node-red-contrib-iiot-ds18b20"
+    "url": "https://github.com/iiot2k/node-red-contrib-iiot-ds18b20"
   },
 
   "license": "Apache-2.0",
@@ -23,6 +23,6 @@
   "author": {
     "name": "Ocean",
     "email": "iot.redplc@gmail.com",
-    "url": "https://github.com/redplc/node-red-contrib-iiot-ds18b20"
+    "url": "https://github.com/iiot2k/node-red-contrib-iiot-ds18b20"
   }
 }
