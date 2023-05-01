@@ -47,8 +47,7 @@ module.exports = function(RED) {
 			if (node.ndevice == 0)
 				node.iserror = syslib.setStatus(node, node.status_txt + " nodevice", "grey");
 			else {
-				node.ctxvar = new Array(node.ndevice).fill(0);
-				node.topics = new Array(node.ndevice).fill("");
+				node.ctxvar = new Array(node.ndevice).fill(node.fahrenheit ? -67 : -55);
 				syslib.setStatus(node, node.status_txt, "grey");
 			}
 		}
@@ -60,12 +59,10 @@ module.exports = function(RED) {
 				else {
 					var val_read = node.fahrenheit ? (readval * (9/5)) + 32 : readval;
 					val_read = syslib.toFixed(val_read, node.tofix);
-					
-					node.topics[index] = device_id;
 
 					if (node.ctxvar[index] !== val_read) {
 						node.ctxvar[index] = val_read;
-						node.send({ payload: node.ctxvar, topic: node.topics });
+						node.send({ payload: node.ctxvar, topic: device_id });
 					}
 				}
 
