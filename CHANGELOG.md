@@ -12,3 +12,6 @@
 - wrong path in README.md
 - Init array with -55°C or -67°F
 - Change topic array string to topic string
+
+2.0.5
+- Add as present for Node-Red user a tool for set sensor resolution
