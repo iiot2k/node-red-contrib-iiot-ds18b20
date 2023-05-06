@@ -17,87 +17,87 @@
 "use strict";
 
 module.exports = function(RED) {
-	const syslib = require("./lib/syslib.js");
-	const sysmodule = syslib.LoadModule("rpi_ds18b20");
+    const syslib = require("./lib/syslib.js");
+    const sysmodule = syslib.LoadModule("rpi_ds18b20");
 
     RED.nodes.registerType("iiot-ds18b20-fs", function(n) {
-		var node = this;
-		RED.nodes.createNode(node, n);
+        var node = this;
+        RED.nodes.createNode(node, n);
 
-		node.tupdate = n.tupdate;
-		node.fahrenheit = n.fahrenheit;
-		node.tofix = n.tofix;
+        node.tupdate = n.tupdate;
+        node.fahrenheit = n.fahrenheit;
+        node.tofix = n.tofix;
 
-		node.name = "iiot-ds18b20-fs";
-		node.onwork = false;
-		node.iserror = false;
-		node.ndevice = 0;
-		node.ch_cnt = 0;
-		node.status_txt = "↻ " + node.tupdate + "s ";
+        node.name = "iiot-ds18b20-fs";
+        node.onwork = false;
+        node.iserror = false;
+        node.ndevice = 0;
+        node.ch_cnt = 0;
+        node.status_txt = "↻ " + node.tupdate + "s ";
 
-		if (sysmodule === undefined)
-			node.iserror = syslib.outError(node, "driver error", "driver not load, wrong os or not Raspi");
-		else if (sysmodule.isused())
-			node.iserror = syslib.outError(node, "already used", "node already used");
-		else if (!sysmodule.init_fs())
-			node.iserror = syslib.outError(node, "init error", "init error, no 1-wire setup");
-		else {
-			node.ndevice = sysmodule.get_ndevice_fs();
+        if (sysmodule === undefined)
+            node.iserror = syslib.outError(node, "driver error", "driver not load, wrong os or not Raspi");
+        else if (sysmodule.isused())
+            node.iserror = syslib.outError(node, "already used", "node already used");
+        else if (!sysmodule.init_fs())
+            node.iserror = syslib.outError(node, "init error", "init error, no 1-wire setup");
+        else {
+            node.ndevice = sysmodule.get_ndevice_fs();
 
-			if (node.ndevice == 0)
-				node.iserror = syslib.setStatus(node, node.status_txt + " nodevice", "grey");
-			else {
-				node.ctxvar = new Array(node.ndevice).fill(node.fahrenheit ? -67 : -55);
-				syslib.setStatus(node, node.status_txt, "grey");
-			}
-		}
+            if (node.ndevice == 0)
+                node.iserror = syslib.setStatus(node, node.status_txt + " nodevice", "grey");
+            else {
+                node.ctxvar = new Array(node.ndevice).fill(node.fahrenheit ? -67 : -55);
+                syslib.setStatus(node, node.status_txt, "grey");
+            }
+        }
 
-		function update(index) {
-			sysmodule.get_temperatur_fs(index, function(readval, index, device_id) {
-				if (readval === null)
-					node.read_error = syslib.outError(node, "read error: " + device_id);
-				else {
-					var val_read = node.fahrenheit ? (readval * (9/5)) + 32 : readval;
-					val_read = syslib.toFixed(val_read, node.tofix);
+        function update(index) {
+            sysmodule.get_temperatur_fs(index, function(readval, index, device_id) {
+                if (readval === null)
+                    node.read_error = syslib.outError(node, "read error: " + device_id);
+                else {
+                    var val_read = node.fahrenheit ? (readval * (9/5)) + 32 : readval;
+                    val_read = syslib.toFixed(val_read, node.tofix);
 
-					if (node.ctxvar[index] !== val_read) {
-						node.ctxvar[index] = val_read;
-						node.send({ payload: node.ctxvar, topic: device_id });
-					}
-				}
+                    if (node.ctxvar[index] !== val_read) {
+                        node.ctxvar[index] = val_read;
+                        node.send({ payload: node.ctxvar, topic: device_id });
+                    }
+                }
 
-				node.ch_cnt++;
+                node.ch_cnt++;
 
-				if (node.ch_cnt >= node.ndevice)
-				{
-					if (!node.read_error)
-						syslib.setStatus(node, node.status_txt);
+                if (node.ch_cnt >= node.ndevice)
+                {
+                    if (!node.read_error)
+                        syslib.setStatus(node, node.status_txt);
 
-					node.onwork = false;
-				}
-			});
-		}
+                    node.onwork = false;
+                }
+            });
+        }
 
-		if (!node.iserror)
-			node.id_interval = setInterval(function() {
-				if (node.onwork)
-					return;
+        if (!node.iserror)
+            node.id_interval = setInterval(function() {
+                if (node.onwork)
+                    return;
 
-				node.onwork = true;
-				node.ch_cnt = 0;
-				node.read_error = false;
+                node.onwork = true;
+                node.ch_cnt = 0;
+                node.read_error = false;
 
-				for ( var index = 0; index < node.ndevice; index++)
-					update(index);
-			}, node.tupdate * 1000);
+                for ( var index = 0; index < node.ndevice; index++)
+                    update(index);
+            }, node.tupdate * 1000);
 
-		node.on('close', function () {
-			clearInterval(node.id_interval);
-			sysmodule.deinit();
-		});
-	});
+        node.on('close', function () {
+            clearInterval(node.id_interval);
+            sysmodule.deinit();
+        });
+    });
 
-	RED.httpAdmin.get('/sensorlist', function(req, res) {
-		res.send(sysmodule.get_list_fs());
+    RED.httpAdmin.get('/sensorlist', function(req, res) {
+        res.send(sysmodule.get_list_fs());
     });
 }

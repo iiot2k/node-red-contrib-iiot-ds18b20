@@ -29,7 +29,7 @@ var pin = 4;
 var resolution = 12;
 
 // call:
-// node setSonsor [resolution] [pin]
+// node setsensor [resolution] [pin]
 
 switch(process.argv.length) {
     case 4: // resolution and pin given

@@ -26,8 +26,7 @@ npm install node-red-contrib-iiot-ds18b20
 
 ## Set sensor resolution
 You can change the sensor resolution with tool in subfolder **setSensor**.<br>
-In this subfolder is a file **readme.txt**.<br>
-This describes how the tool is used.<br>  
+File **readme.txt** describes how the tool is used.<br>
 
 ## Example
 This example reads temperatures from 3 sensors.<br>

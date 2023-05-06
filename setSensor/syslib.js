@@ -24,20 +24,20 @@ const fs = require('fs');
 */
 function getRpiTarget()
 {
-	if (process.platform !== 'linux')
-		return undefined;
-	
-	var cpuinfo = fs.readFileSync("/proc/cpuinfo").toString();
+    if (process.platform !== 'linux')
+        return undefined;
+    
+    var cpuinfo = fs.readFileSync("/proc/cpuinfo").toString();
 
-	if (cpuinfo.indexOf(": BCM") === -1)
-		return undefined;
-	
-	if (process.arch === "arm64")
-		return "_s64.node";
-	else if (process.arch === "arm")
-		return "_s32.node";
-	
-	return undefined;
+    if (cpuinfo.indexOf(": BCM") === -1)
+        return undefined;
+    
+    if (process.arch === "arm64")
+        return "_s64.node";
+    else if (process.arch === "arm")
+        return "_s32.node";
+    
+    return undefined;
 }
 
 /**
@@ -46,11 +46,11 @@ function getRpiTarget()
 * @returns module object
 */
 module.exports.LoadModule = function(module) {
-	try {
-		var modName = getRpiTarget();
-		if (modName !== undefined)
-			return require("./" + module + modName);
-	}
-	catch (e) { console.log(e); }
-	return undefined;
+    try {
+        var modName = getRpiTarget();
+        if (modName !== undefined)
+            return require("./" + module + modName);
+    }
+    catch (e) { console.log(e); }
+    return undefined;
 }
